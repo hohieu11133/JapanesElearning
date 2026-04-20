@@ -1,0 +1,26 @@
+# Build artifacts
+**/bin/
+**/obj/
+
+# IDE folders
+**/.vs/
+**/.idea/
+**/*.user
+**/*.suo
+
+# Git
+.git/
+.gitignore
+
+# Local dev secrets
+**/appsettings.Development.json
+
+# Docs / extras
+skills/
+README.md
+*.md
+
+# Swap / temp
+**/*.swp
+**/*.tmp
+**/node_modules/

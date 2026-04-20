@@ -1,0 +1,317 @@
+# JLPT N5 Vocabulary — Import File for JapanE 学
+# Format: Kanji [Tab] Reading [Tab] Meaning [Tab] Example Sentence
+# Lines starting with # are ignored
+# ─────────────────────────────────────────────────────────────────
+
+# ── Numbers ───────────────────────────────────────────────────────
+一	いち	one	一つのりんご。 One apple.
+二	に	two	二人の学生。 Two students.
+三	さん	three	三時に会いましょう。 Let's meet at three o'clock.
+四	し / よん	four	四月は春です。 April is spring.
+五	ご	five	五分待ってください。 Please wait five minutes.
+六	ろく	six	六時に起きます。 I wake up at six o'clock.
+七	しち / なな	seven	七日間。 Seven days.
+八	はち	eight	八月は暑い。 August is hot.
+九	く / きゅう	nine	九時に寝ます。 I go to bed at nine o'clock.
+十	じゅう	ten	十円のお菓子。 Ten-yen candy.
+百	ひゃく	hundred	百円ショップ。 100-yen shop.
+千	せん	thousand	千円札。 A thousand-yen bill.
+万	まん	ten thousand	一万円。 Ten thousand yen.
+零	ぜろ / れい	zero	零点。 Zero points.
+
+# ── Time ──────────────────────────────────────────────────────────
+今	いま	now	今何時ですか。 What time is it now?
+日	にち / ひ	day / sun	今日は晴れです。 Today is sunny.
+月	つき / がつ	month / moon	来月また会いましょう。 Let's meet again next month.
+年	ねん / とし	year	今年は何年ですか。 What year is it this year?
+時	じ / とき	hour / time	三時です。 It is three o'clock.
+分	ふん / ぷん	minute	五分後に来てください。 Please come in five minutes.
+朝	あさ	morning	朝ご飯を食べます。 I eat breakfast.
+昼	ひる	noon / daytime	昼ご飯はどこで食べますか。 Where do you eat lunch?
+夜	よる	night	夜は静かです。 The night is quiet.
+今日	きょう	today	今日は月曜日です。 Today is Monday.
+明日	あした	tomorrow	明日また来てください。 Please come again tomorrow.
+昨日	きのう	yesterday	昨日映画を見ました。 I watched a movie yesterday.
+今週	こんしゅう	this week	今週は忙しいです。 I am busy this week.
+来週	らいしゅう	next week	来週テストがあります。 There is a test next week.
+先週	せんしゅう	last week	先週の月曜日。 Last Monday.
+今月	こんげつ	this month	今月は三月です。 This month is March.
+来月	らいげつ	next month	来月旅行します。 I will travel next month.
+去年	きょねん	last year	去年日本に行きました。 I went to Japan last year.
+来年	らいねん	next year	来年大学に入ります。 I will enter university next year.
+午前	ごぜん	AM / morning	午前十時。 Ten AM.
+午後	ごご	PM / afternoon	午後三時に会議があります。 There is a meeting at 3 PM.
+週末	しゅうまつ	weekend	週末は何をしますか。 What do you do on weekends?
+毎日	まいにち	every day	毎日日本語を勉強します。 I study Japanese every day.
+毎朝	まいあさ	every morning	毎朝コーヒーを飲みます。 I drink coffee every morning.
+毎晩	まいばん	every evening	毎晩本を読みます。 I read a book every evening.
+
+# ── Days of the Week ──────────────────────────────────────────────
+月曜日	げつようび	Monday	月曜日は学校があります。 I have school on Monday.
+火曜日	かようび	Tuesday	火曜日に映画を見ます。 I watch a movie on Tuesday.
+水曜日	すいようび	Wednesday	水曜日に友達と会います。 I meet a friend on Wednesday.
+木曜日	もくようび	Thursday	木曜日はテストがあります。 There is a test on Thursday.
+金曜日	きんようび	Friday	金曜日が好きです。 I like Friday.
+土曜日	どようび	Saturday	土曜日に掃除します。 I clean on Saturday.
+日曜日	にちようび	Sunday	日曜日に休みます。 I rest on Sunday.
+
+# ── People & Pronouns ─────────────────────────────────────────────
+私	わたし	I / me	私は学生です。 I am a student.
+僕	ぼく	I / me (male)	僕は十八歳です。 I am eighteen years old.
+あなた	あなた	you	あなたの名前は何ですか。 What is your name?
+彼	かれ	he / boyfriend	彼は背が高いです。 He is tall.
+彼女	かのじょ	she / girlfriend	彼女は先生です。 She is a teacher.
+人	ひと / じん	person	あの人は誰ですか。 Who is that person?
+方	かた	person (polite)	あの方はどなたですか。 Who is that person (polite)?
+友達	ともだち	friend	友達と映画を見ます。 I watch a movie with my friend.
+家族	かぞく	family	家族は四人です。 My family has four people.
+父	ちち	(my) father	父は会社員です。 My father is a company employee.
+母	はは	(my) mother	母は料理が上手です。 My mother is good at cooking.
+兄	あに	(my) older brother	兄は大学生です。 My older brother is a university student.
+姉	あね	(my) older sister	姉は結婚しています。 My older sister is married.
+弟	おとうと	(my) younger brother	弟はまだ小学生です。 My younger brother is still in elementary school.
+妹	いもうと	(my) younger sister	妹はかわいいです。 My younger sister is cute.
+子供	こども	child	子供が公園で遊んでいます。 A child is playing in the park.
+学生	がくせい	student	私は学生です。 I am a student.
+先生	せんせい	teacher	田中先生は親切です。 Teacher Tanaka is kind.
+医者	いしゃ	doctor	医者に行きました。 I went to the doctor.
+
+# ── Common Verbs ──────────────────────────────────────────────────
+食べる	たべる	to eat	ご飯を食べます。 I eat rice.
+飲む	のむ	to drink	水を飲みます。 I drink water.
+見る	みる	to see / to watch	テレビを見ます。 I watch television.
+聞く	きく	to listen / to ask	音楽を聞きます。 I listen to music.
+話す	はなす	to speak / to talk	日本語を話します。 I speak Japanese.
+読む	よむ	to read	本を読みます。 I read a book.
+書く	かく	to write	手紙を書きます。 I write a letter.
+行く	いく	to go	学校に行きます。 I go to school.
+来る	くる	to come	友達が来ます。 My friend comes.
+帰る	かえる	to return / go home	家に帰ります。 I go home.
+起きる	おきる	to wake up	七時に起きます。 I wake up at seven.
+寝る	ねる	to sleep / go to bed	十一時に寝ます。 I go to bed at eleven.
+買う	かう	to buy	本を買います。 I buy a book.
+売る	うる	to sell	店で野菜を売ります。 I sell vegetables at the store.
+作る	つくる	to make / to cook	料理を作ります。 I make food.
+使う	つかう	to use	パソコンを使います。 I use a computer.
+開ける	あける	to open	ドアを開けます。 I open the door.
+閉める	しめる	to close	窓を閉めます。 I close the window.
+入る	はいる	to enter	部屋に入ります。 I enter the room.
+出る	でる	to exit / to leave	外に出ます。 I go outside.
+乗る	のる	to ride / to get on	電車に乗ります。 I ride the train.
+降りる	おりる	to get off / descend	バスを降ります。 I get off the bus.
+会う	あう	to meet	友達に会います。 I meet my friend.
+待つ	まつ	to wait	駅で待ちます。 I wait at the station.
+立つ	たつ	to stand up	立ってください。 Please stand up.
+座る	すわる	to sit down	椅子に座ります。 I sit on a chair.
+歩く	あるく	to walk	駅まで歩きます。 I walk to the station.
+走る	はしる	to run	毎朝走ります。 I run every morning.
+泳ぐ	およぐ	to swim	海で泳ぎます。 I swim in the sea.
+働く	はたらく	to work	会社で働きます。 I work at a company.
+勉強する	べんきょうする	to study	日本語を勉強します。 I study Japanese.
+練習する	れんしゅうする	to practice	毎日練習します。 I practice every day.
+洗う	あらう	to wash	手を洗います。 I wash my hands.
+掃除する	そうじする	to clean	部屋を掃除します。 I clean my room.
+電話する	でんわする	to call / phone	友達に電話します。 I call my friend.
+分かる	わかる	to understand	日本語が分かります。 I understand Japanese.
+知る	しる	to know / to find out	彼の名前を知っています。 I know his name.
+忘れる	わすれる	to forget	宿題を忘れました。 I forgot my homework.
+覚える	おぼえる	to remember / to memorize	漢字を覚えます。 I memorize kanji.
+持つ	もつ	to hold / to have	かばんを持ちます。 I carry my bag.
+あげる	あげる	to give (to someone)	プレゼントをあげます。 I give a present.
+もらう	もらう	to receive	プレゼントをもらいます。 I receive a present.
+見せる	みせる	to show	写真を見せてください。 Please show me the photo.
+教える	おしえる	to teach / to tell	日本語を教えます。 I teach Japanese.
+思う	おもう	to think	そう思います。 I think so.
+言う	いう	to say	何を言いましたか。 What did you say?
+する	する	to do	何をしますか。 What will you do?
+ある	ある	there is (inanimate)	本があります。 There is a book.
+いる	いる	there is (animate)	猫がいます。 There is a cat.
+
+# ── Adjectives (い-adj) ───────────────────────────────────────────
+大きい	おおきい	big / large	大きい犬です。 It is a big dog.
+小さい	ちいさい	small	小さい猫です。 It is a small cat.
+長い	ながい	long	この道は長いです。 This road is long.
+短い	みじかい	short	この鉛筆は短いです。 This pencil is short.
+高い	たかい	tall / expensive	この山は高いです。 This mountain is tall.
+低い	ひくい	low / short (height)	この建物は低い。 This building is low.
+広い	ひろい	wide / spacious	公園は広いです。 The park is spacious.
+狭い	せまい	narrow / small (space)	この部屋は狭いです。 This room is small.
+新しい	あたらしい	new	新しい靴を買いました。 I bought new shoes.
+古い	ふるい	old (things)	古い本です。 It is an old book.
+若い	わかい	young	彼は若いです。 He is young.
+速い	はやい	fast	この車は速いです。 This car is fast.
+遅い	おそい	slow / late	電車が遅いです。 The train is late.
+早い	はやい	early	今日は早く起きました。 I woke up early today.
+暑い	あつい	hot (weather)	夏は暑いです。 Summer is hot.
+寒い	さむい	cold (weather)	冬は寒いです。 Winter is cold.
+熱い	あつい	hot (to touch)	お湯が熱いです。 The hot water is hot.
+冷たい	つめたい	cold (to touch)	水が冷たい。 The water is cold.
+いい / 良い	いい / よい	good / nice	天気がいいです。 The weather is nice.
+悪い	わるい	bad	天気が悪いです。 The weather is bad.
+多い	おおい	many / much	人が多いです。 There are many people.
+少ない	すくない	few / little	お金が少ないです。 I have little money.
+難しい	むずかしい	difficult	日本語は難しいです。 Japanese is difficult.
+易しい	やさしい	easy	この問題は易しいです。 This problem is easy.
+面白い	おもしろい	interesting / funny	この映画は面白いです。 This movie is interesting.
+楽しい	たのしい	fun / enjoyable	パーティーは楽しいです。 The party is fun.
+忙しい	いそがしい	busy	今日は忙しいです。 I am busy today.
+眠い	ねむい	sleepy	眠いです。 I am sleepy.
+痛い	いたい	painful	頭が痛いです。 My head hurts.
+美味しい	おいしい	delicious	この料理は美味しいです。 This dish is delicious.
+まずい	まずい	bad-tasting	この食べ物はまずい。 This food tastes bad.
+嬉しい	うれしい	happy / glad	会えて嬉しいです。 I am glad to see you.
+悲しい	かなしい	sad	悲しい話です。 It is a sad story.
+怖い	こわい	scary / afraid	この映画は怖いです。 This movie is scary.
+白い	しろい	white	白い猫がいます。 There is a white cat.
+黒い	くろい	black	黒い犬です。 It is a black dog.
+赤い	あかい	red	赤いりんごです。 It is a red apple.
+青い	あおい	blue / green (nature)	青い空です。 It is a blue sky.
+黄色い	きいろい	yellow	黄色い花です。 It is a yellow flower.
+
+# ── Adjectives (な-adj) ───────────────────────────────────────────
+好き	すき	like / fond of	音楽が好きです。 I like music.
+嫌い	きらい	dislike	野菜が嫌いです。 I dislike vegetables.
+上手	じょうず	good at / skilled	料理が上手です。 I am good at cooking.
+下手	へた	bad at / unskilled	歌が下手です。 I am bad at singing.
+有名	ゆうめい	famous	有名な俳優です。 He is a famous actor.
+親切	しんせつ	kind / kindness	彼は親切です。 He is kind.
+丁寧	ていねい	polite	丁寧な人です。 He is a polite person.
+暇	ひま	free time / not busy	今日は暇です。 I am free today.
+便利	べんり	convenient	このアプリは便利です。 This app is convenient.
+大丈夫	だいじょうぶ	okay / all right	大丈夫ですか。 Are you okay?
+大切	たいせつ	important / precious	時間は大切です。 Time is precious.
+必要	ひつよう	necessary	水は必要です。 Water is necessary.
+静か	しずか	quiet	図書館は静かです。 The library is quiet.
+賑やか	にぎやか	lively / bustling	渋谷は賑やかです。 Shibuya is lively.
+元気	げんき	healthy / energetic	元気ですか。 Are you well?
+きれい	きれい	clean / pretty	この花はきれいです。 This flower is pretty.
+おかしい	おかしい	strange / funny	おかしい話。 A strange story.
+
+# ── Places ────────────────────────────────────────────────────────
+学校	がっこう	school	毎日学校に行きます。 I go to school every day.
+大学	だいがく	university	大学で英語を勉強します。 I study English at university.
+病院	びょういん	hospital	病院に行きます。 I go to the hospital.
+銀行	ぎんこう	bank	銀行でお金を下ろします。 I withdraw money at the bank.
+駅	えき	train station	駅まで歩きます。 I walk to the station.
+空港	くうこう	airport	空港まで電車で行きます。 I go to the airport by train.
+店	みせ	shop / store	あの店は安いです。 That store is cheap.
+スーパー	スーパー	supermarket	スーパーで野菜を買います。 I buy vegetables at the supermarket.
+レストラン	レストラン	restaurant	レストランで食べます。 I eat at a restaurant.
+図書館	としょかん	library	図書館で勉強します。 I study at the library.
+公園	こうえん	park	公園で散歩します。 I take a walk in the park.
+部屋	へや	room	私の部屋は小さいです。 My room is small.
+家	いえ / うち	house / home	家に帰ります。 I go home.
+会社	かいしゃ	company	父は会社に行きます。 My father goes to work.
+郵便局	ゆうびんきょく	post office	手紙を郵便局で出します。 I send a letter at the post office.
+トイレ	トイレ	toilet / restroom	トイレはどこですか。 Where is the restroom?
+玄関	げんかん	entrance / front door	玄関で靴を脱ぎます。 I take off my shoes at the entrance.
+
+# ── Food & Drink ──────────────────────────────────────────────────
+ご飯	ごはん	rice / meal	ご飯を食べます。 I eat rice.
+パン	パン	bread	朝はパンを食べます。 I eat bread in the morning.
+肉	にく	meat	肉が好きです。 I like meat.
+魚	さかな	fish	魚を料理します。 I cook fish.
+野菜	やさい	vegetables	野菜は体にいいです。 Vegetables are good for your body.
+果物	くだもの	fruit	果物が好きです。 I like fruit.
+水	みず	water	水を飲みます。 I drink water.
+お茶	おちゃ	tea (Japanese)	お茶を一杯どうぞ。 Please have a cup of tea.
+コーヒー	コーヒー	coffee	毎朝コーヒーを飲みます。 I drink coffee every morning.
+牛乳	ぎゅうにゅう	milk	牛乳を飲みます。 I drink milk.
+酒	さけ	alcohol / sake	お酒が好きですか。 Do you like alcohol?
+卵	たまご	egg	卵を食べます。 I eat an egg.
+りんご	りんご	apple	りんごが好きです。 I like apples.
+みかん	みかん	mandarin orange	みかんをたくさん食べました。 I ate many mandarin oranges.
+砂糖	さとう	sugar	コーヒーに砂糖を入れます。 I put sugar in my coffee.
+塩	しお	salt	料理に塩を入れます。 I put salt in my food.
+醤油	しょうゆ	soy sauce	醤油をかけます。 I put on soy sauce.
+
+# ── Clothing & Body ───────────────────────────────────────────────
+服	ふく	clothes	新しい服を買いました。 I bought new clothes.
+靴	くつ	shoes	靴を履きます。 I put on shoes.
+帽子	ぼうし	hat / cap	帽子をかぶります。 I wear a hat.
+眼鏡	めがね	glasses	眼鏡をかけます。 I wear glasses.
+頭	あたま	head	頭が痛いです。 My head hurts.
+顔	かお	face	顔を洗います。 I wash my face.
+目	め	eye	目が大きいです。 She has big eyes.
+耳	みみ	ear	耳で音を聞きます。 I listen with my ears.
+口	くち	mouth	口を開けてください。 Please open your mouth.
+鼻	はな	nose	鼻が長いです。 His nose is long.
+手	て	hand	手を洗います。 I wash my hands.
+足	あし	foot / leg	足が痛いです。 My leg hurts.
+
+# ── Transportation ────────────────────────────────────────────────
+電車	でんしゃ	train	電車で行きます。 I go by train.
+バス	バス	bus	バスに乗ります。 I ride the bus.
+タクシー	タクシー	taxi	タクシーを呼びます。 I call a taxi.
+飛行機	ひこうき	airplane	飛行機で旅行します。 I travel by airplane.
+車	くるま	car	車で来ました。 I came by car.
+自転車	じてんしゃ	bicycle	自転車で学校に行きます。 I go to school by bicycle.
+地下鉄	ちかてつ	subway	地下鉄に乗ります。 I ride the subway.
+
+# ── Nature & Weather ──────────────────────────────────────────────
+天気	てんき	weather	今日の天気はどうですか。 How is the weather today?
+晴れ	はれ	sunny / clear	今日は晴れです。 Today is sunny.
+雨	あめ	rain	雨が降っています。 It is raining.
+雪	ゆき	snow	雪が降っています。 It is snowing.
+風	かぜ	wind	強い風が吹いています。 A strong wind is blowing.
+空	そら	sky	青い空です。 The sky is blue.
+山	やま	mountain	富士山は高いです。 Mt. Fuji is tall.
+川	かわ	river	川で魚を釣ります。 I fish in the river.
+海	うみ	sea / ocean	夏に海に行きます。 I go to the sea in summer.
+木	き	tree	公園に木があります。 There are trees in the park.
+花	はな	flower	きれいな花ですね。 What a beautiful flower.
+春	はる	spring	春は暖かいです。 Spring is warm.
+夏	なつ	summer	夏は暑いです。 Summer is hot.
+秋	あき	autumn	秋は紅葉がきれいです。 Autumn leaves are beautiful.
+冬	ふゆ	winter	冬は寒いです。 Winter is cold.
+
+# ── Objects / Things ──────────────────────────────────────────────
+本	ほん	book	本を読みます。 I read a book.
+雑誌	ざっし	magazine	雑誌を買いました。 I bought a magazine.
+新聞	しんぶん	newspaper	新聞を読みます。 I read the newspaper.
+紙	かみ	paper	紙に書きます。 I write on paper.
+鉛筆	えんぴつ	pencil	鉛筆で書きます。 I write with a pencil.
+ペン	ペン	pen	ペンを貸してください。 Please lend me a pen.
+机	つくえ	desk	机の上に本があります。 There is a book on the desk.
+椅子	いす	chair	椅子に座ります。 I sit on a chair.
+かばん	かばん	bag	かばんを持ちます。 I carry a bag.
+財布	さいふ	wallet / purse	財布をなくしました。 I lost my wallet.
+鍵	かぎ	key	鍵をかけます。 I lock the door.
+時計	とけい	clock / watch	時計を見ます。 I look at my watch.
+写真	しゃしん	photograph	写真を撮ります。 I take a photograph.
+地図	ちず	map	地図で場所を確認します。 I check the location on a map.
+電話	でんわ	telephone	電話をかけます。 I make a phone call.
+携帯	けいたい	mobile phone	携帯で写真を撮ります。 I take a photo with my mobile phone.
+テレビ	テレビ	television	テレビを見ます。 I watch television.
+パソコン	パソコン	computer	パソコンを使います。 I use a computer.
+
+# ── Question Words ────────────────────────────────────────────────
+何	なに / なん	what	何ですか。 What is it?
+誰	だれ	who	誰ですか。 Who is it?
+どこ	どこ	where	どこに行きますか。 Where are you going?
+いつ	いつ	when	いつ来ますか。 When will you come?
+どれ	どれ	which one	どれが好きですか。 Which one do you like?
+どの	どの	which (+ noun)	どの本が好きですか。 Which book do you like?
+どんな	どんな	what kind of	どんな音楽が好きですか。 What kind of music do you like?
+どうして	どうして	why	どうして遅いですか。 Why are you late?
+なぜ	なぜ	why (formal)	なぜ泣いているの？ Why are you crying?
+どうやって	どうやって	how (method)	どうやって行きますか。 How do you get there?
+いくら	いくら	how much	これはいくらですか。 How much is this?
+いくつ	いくつ	how many	りんごはいくつありますか。 How many apples are there?
+
+# ── Common Expressions & Connectors ──────────────────────────────
+そして	そして	and then / and	ご飯を食べて、そして寝ます。 I eat and then sleep.
+でも	でも	but / however	行きたいでも、時間がない。 I want to go, but I have no time.
+だから	だから	so / therefore	眠いから、寝ます。 I am sleepy, so I will sleep.
+もう	もう	already / anymore	もう食べました。 I already ate.
+まだ	まだ	still / not yet	まだ終わっていません。 I am not finished yet.
+また	また	again	また会いましょう。 Let's meet again.
+一緒に	いっしょに	together	一緒に行きましょう。 Let's go together.
+ちょっと	ちょっと	a little / a moment	ちょっと待ってください。 Please wait a moment.
+たくさん	たくさん	a lot / many	たくさん食べました。 I ate a lot.
+少し	すこし	a little / a few	少し分かります。 I understand a little.
+全部	ぜんぶ	all / everything	全部食べました。 I ate everything.
+本当に	ほんとうに	really / truly	本当にありがとうございます。 Thank you very much indeed.
+大体	だいたい	generally / about	大体三十分かかります。 It takes about thirty minutes.
+特に	とくに	especially / particularly	特にりんごが好きです。 I especially like apples.
+例えば	たとえば	for example	例えば、りんごやみかんです。 For example, apples and oranges.

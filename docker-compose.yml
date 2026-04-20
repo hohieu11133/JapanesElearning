@@ -1,0 +1,40 @@
+services:
+
+  # ── SQL Server 2022 ─────────────────────────────────────────────────────────
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: japane-learn-db
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Password123!@#"
+      MSSQL_PID: "Express"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqldata:/var/opt/mssql
+    restart: unless-stopped
+
+  # ── API + Frontend ───────────────────────────────────────────────────────────
+  api:
+    image: kyhieu/japane-learn:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: japane-learn-api
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - FRONTEND_PATH=/app/frontend
+      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=JapaneseFlashcardDb;User Id=sa;Password=Password123!@#;TrustServerCertificate=True;
+      - Jwt__Key=Mot_Cai_Key_That_Dai_Va_Bi_Mat_Hon_32_Ky_Tu
+      - Jwt__Issuer=JapaneseFlashcardAPI
+      - Jwt__Audience=JapaneseFlashcardClient
+      - Jwt__ExpiresInHours=24
+    depends_on:
+      - db
+    restart: on-failure:5
+
+volumes:
+  sqldata:
+    driver: local

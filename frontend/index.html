@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JapanE 学 — Japanese Flashcard SRS</title>
+  <meta name="description" content="A scholarly Japanese vocabulary flashcard app with spaced repetition, handwriting practice, and bulk import." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════ AUTH PAGE ══ -->
+<div id="page-auth" class="page active">
+  <div class="auth-bg">
+    <div class="auth-torii">学</div>
+  </div>
+  <div class="auth-container">
+    <div class="auth-brand">
+      <span class="brand-kanji">学</span>
+      <span class="brand-name">JapanE<em>学</em></span>
+    </div>
+    <p class="auth-tagline">The Scholarly Inkstone</p>
+
+    <div class="auth-tabs">
+      <button id="tab-login" class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+      <button id="tab-register" class="auth-tab" onclick="switchAuthTab('register')">Register</button>
+    </div>
+
+    <form id="form-login" class="auth-form" onsubmit="handleLogin(event)">
+      <div class="field-group">
+        <label class="field-label">Email</label>
+        <input id="login-email" type="email" class="field-input" placeholder="your@email.com" required />
+      </div>
+      <div class="field-group">
+        <label class="field-label">Password</label>
+        <input id="login-password" type="password" class="field-input" placeholder="••••••••" required />
+      </div>
+      <div id="login-error" class="auth-error hidden"></div>
+      <button type="submit" class="btn-primary btn-full" id="btn-login"><span>Sign In</span></button>
+    </form>
+
+    <form id="form-register" class="auth-form hidden" onsubmit="handleRegister(event)">
+      <div class="field-group">
+        <label class="field-label">Username</label>
+        <input id="reg-username" type="text" class="field-input" placeholder="scholar_name" required />
+      </div>
+      <div class="field-group">
+        <label class="field-label">Email</label>
+        <input id="reg-email" type="email" class="field-input" placeholder="your@email.com" required />
+      </div>
+      <div class="field-group">
+        <label class="field-label">Password</label>
+        <input id="reg-password" type="password" class="field-input" placeholder="Min 8 characters" minlength="8" required />
+      </div>
+      <div id="register-error" class="auth-error hidden"></div>
+      <button type="submit" class="btn-primary btn-full" id="btn-register"><span>Create Account</span></button>
+    </form>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ MAIN APP ══ -->
+<div id="page-app" class="page hidden">
+
+  <!-- Sidebar -->
+  <nav id="sidebar" class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-kanji-sm">学</span>
+      <span class="brand-name-sm">JapanE<em>学</em></span>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-avatar" id="user-avatar">S</div>
+      <div>
+        <div class="user-name" id="user-name-display">Scholar</div>
+        <div class="user-level">JLPT N5</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a class="nav-link active" id="nav-dashboard" onclick="showView('dashboard')" href="#">
+        <span class="nav-icon">⊞</span><span>Dashboard</span>
+      </a>
+      <a class="nav-link" id="nav-decks" onclick="showView('decks')" href="#">
+        <span class="nav-icon">▤</span><span>My Decks</span>
+      </a>
+      <a class="nav-link" id="nav-stats" onclick="showView('stats')" href="#">
+        <span class="nav-icon">◈</span><span>Statistics</span>
+      </a>
+    </div>
+    <button class="btn-logout" onclick="handleLogout()">↩ Sign out</button>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- ── DASHBOARD ───────────────────────────────────────────────────────── -->
+    <div id="view-dashboard" class="view active">
+      <header class="view-header">
+        <div>
+          <div class="view-eyebrow">おはようございます</div>
+          <h1 class="view-title" id="dash-greeting">Good morning, Scholar</h1>
+        </div>
+        <div class="header-date" id="header-date"></div>
+      </header>
+      <div class="stats-row">
+        <div class="stat-card accent">
+          <div class="stat-number" id="stat-due">—</div>
+          <div class="stat-label">Due Today</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">🔥 —</div>
+          <div class="stat-label">Day Streak</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="stat-total">—</div>
+          <div class="stat-label">Total Cards</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-number" id="stat-decks">—</div>
+          <div class="stat-label">Active Decks</div>
+        </div>
+      </div>
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Active Decks</h2>
+          <button class="btn-ghost btn-sm" onclick="showView('decks')">View all →</button>
+        </div>
+        <div class="deck-grid" id="dash-deck-grid">
+          <div class="empty-state">Loading decks…</div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ── MY DECKS ────────────────────────────────────────────────────────── -->
+    <div id="view-decks" class="view hidden">
+      <header class="view-header">
+        <div>
+          <div class="view-eyebrow">管理</div>
+          <h1 class="view-title">My Decks</h1>
+        </div>
+        <button class="btn-primary" onclick="openCreateDeckModal()">+ New Deck</button>
+      </header>
+      <div class="deck-grid full" id="decks-grid">
+        <div class="empty-state">Loading…</div>
+      </div>
+    </div>
+
+    <!-- ── CARDS VIEW ──────────────────────────────────────────────────────── -->
+    <div id="view-cards" class="view hidden">
+      <header class="view-header">
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+          <button class="btn-ghost btn-sm" onclick="showView('decks')">← Decks</button>
+          <div>
+            <div class="view-eyebrow">単語帳</div>
+            <h1 class="view-title" id="cards-deck-title">Deck</h1>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-ghost btn-sm" id="btn-edit-deck" onclick="openEditDeckModal()">✏ Rename</button>
+          <button class="btn-danger btn-sm" id="btn-delete-deck" onclick="confirmDeleteDeck()">🗑 Delete Deck</button>
+          <button class="btn-ghost" onclick="openImportModal()">⬆ Import</button>
+          <button class="btn-ghost" onclick="openAddCardModal()">+ Add Card</button>
+          <button class="btn-accent" id="btn-start-study" onclick="openStudyModeModal()">▶ Study Now</button>
+        </div>
+      </header>
+
+      <div class="cards-table-wrap">
+        <table class="cards-table">
+          <thead>
+            <tr>
+              <th>Kanji</th><th>Reading</th><th>Meaning</th><th>Example</th><th>Next Review</th><th>Interval</th><th class="th-actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="cards-tbody">
+            <tr><td colspan="7" class="empty-state">No cards yet — add some!</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── STUDY VIEW (Split Screen) ──────────────────────────────────────── -->
+    <div id="view-study" class="view hidden">
+      <!-- Practice header (default) -->
+      <div id="practice-header" class="study-header-section">
+        <button class="btn-ghost btn-sm" onclick="exitStudy()">✕ End Session</button>
+        <div class="study-progress-bar-wrap">
+          <div class="study-progress-bar" id="study-progress-bar"></div>
+        </div>
+        <div class="study-counter" id="study-counter">0 / 0</div>
+      </div>
+      <!-- Browse header -->
+      <div id="browse-header" class="study-header-section hidden">
+        <button class="btn-ghost btn-sm" onclick="exitStudy()">✕ End</button>
+        <div class="browse-nav">
+          <button class="btn-ghost btn-sm" id="btn-browse-prev" onclick="browsePrev()">← Prev</button>
+          <span class="study-counter" id="browse-counter">1 / 50</span>
+          <button class="btn-ghost btn-sm" id="btn-browse-next" onclick="browseNext()">Next →</button>
+        </div>
+        <span class="study-mode-badge">📖 Browse</span>
+      </div>
+
+      <div class="study-split">
+        <!-- Left: Card -->
+        <div class="study-card-panel">
+          <div class="flashcard" id="flashcard" onclick="toggleCard()">
+            <div class="card-front" id="card-front">
+              <div class="card-prompt">How do you write this in Japanese?</div>
+              <div class="card-meaning-front" id="card-meaning-front">to eat</div>
+              <div class="card-example-front" id="card-example-front"></div>
+              <div class="card-tap-hint" id="card-tap-hint">Tap to reveal Kanji →</div>
+            </div>
+            <div class="card-back hidden" id="card-back">
+              <div class="card-kanji" id="card-kanji">食べる</div>
+              <button class="btn-speak" id="speak-btn" onclick="event.stopPropagation();speakWord(document.getElementById('card-kanji').textContent)" title="Listen to pronunciation">🔊</button>
+              <div class="card-reading-revealed" id="card-reading-revealed"></div>
+              <div class="card-example" id="card-example"></div>
+              <div class="card-tap-hint-back">Tap to flip back ↩</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Handwriting Canvas -->
+        <div class="canvas-panel">
+          <div class="canvas-label">✍ Practice Writing</div>
+          <div class="canvas-wrap">
+            <canvas id="draw-canvas" class="draw-canvas"></canvas>
+          </div>
+          <div class="canvas-toolbar">
+            <button class="tool-btn active" id="tool-pen" onclick="setTool('pen')" title="Pen">✏</button>
+            <button class="tool-btn" id="tool-eraser" onclick="setTool('eraser')" title="Eraser">⊘</button>
+            <div class="tool-separator"></div>
+            <input type="range" id="pen-size" class="pen-size-slider" min="2" max="24" value="4" title="Brush size" />
+            <div class="tool-separator"></div>
+            <button class="btn-ghost btn-sm" onclick="clearCanvas()">Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rating Row (shown after reveal) -->
+      <div class="rating-row hidden" id="rating-row">
+        <button class="btn-rate rate-1" onclick="submitRating(1)">
+          <span class="rate-label">忘れた</span><span class="rate-sub">Forgot (1)</span>
+        </button>
+        <button class="btn-rate rate-2" onclick="submitRating(2)">
+          <span class="rate-label">難しい</span><span class="rate-sub">Hard (2)</span>
+        </button>
+        <button class="btn-rate rate-3" onclick="submitRating(3)">
+          <span class="rate-label">良い</span><span class="rate-sub">Good (3)</span>
+        </button>
+        <button class="btn-rate rate-4" onclick="submitRating(4)">
+          <span class="rate-label">簡単</span><span class="rate-sub">Easy (4)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STUDY COMPLETE ──────────────────────────────────────────────────── -->
+    <div id="view-study-complete" class="view hidden">
+      <div class="complete-hero">
+        <div class="complete-kanji">完</div>
+        <h1 class="complete-title">Session Complete!</h1>
+        <p class="complete-sub" id="complete-sub">You reviewed — cards.</p>
+        <div class="complete-actions">
+          <button class="btn-primary" onclick="showView('dashboard')">Back to Dashboard</button>
+          <button class="btn-ghost" onclick="showView('decks')">View Decks</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STATISTICS ──────────────────────────────────────────────────────── -->
+    <div id="view-stats" class="view hidden">
+      <header class="view-header">
+        <div>
+          <div class="view-eyebrow">進捗</div>
+          <h1 class="view-title">Statistics &amp; Progress</h1>
+        </div>
+      </header>
+      <div class="stats-grid">
+        <div class="stat-card-lg accent">
+          <div class="stat-lg-num" id="stats-due">—</div>
+          <div class="stat-lg-label">Cards Due Today</div>
+        </div>
+        <div class="stat-card-lg">
+          <div class="stat-lg-num" id="stats-total">—</div>
+          <div class="stat-lg-label">Total Flashcards</div>
+        </div>
+        <div class="stat-card-lg green">
+          <div class="stat-lg-num" id="stats-decks">—</div>
+          <div class="stat-lg-label">Decks Created</div>
+        </div>
+      </div>
+      <section class="section">
+        <h2 class="section-title">All Decks Overview</h2>
+        <div id="stats-decks-list" class="stats-deck-list">
+          <div class="empty-state">Loading…</div>
+        </div>
+      </section>
+    </div>
+
+  </main>
+</div>
+
+<!-- ═════════════════════════════════════════════════════════════ MODALS ══ -->
+
+<!-- Create Deck -->
+<div id="modal-create-deck" class="modal-overlay hidden" onclick="closeModal('modal-create-deck')">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <h2 class="modal-title">新しいデッキ<span>New Deck</span></h2>
+    <form onsubmit="handleCreateDeck(event)">
+      <div class="field-group">
+        <label class="field-label">Deck Title</label>
+        <input id="new-deck-title" type="text" class="field-input" placeholder="e.g. JLPT N5 Verbs" required maxlength="200" />
+      </div>
+      <div id="create-deck-error" class="auth-error hidden"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" onclick="closeModal('modal-create-deck')">Cancel</button>
+        <button type="submit" class="btn-primary">Create Deck</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Deck -->
+<div id="modal-edit-deck" class="modal-overlay hidden" onclick="closeModal('modal-edit-deck')">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <h2 class="modal-title">デッキ編集<span>Rename Deck</span></h2>
+    <form onsubmit="handleEditDeck(event)">
+      <div class="field-group">
+        <label class="field-label">Deck Title</label>
+        <input id="edit-deck-title" type="text" class="field-input" required maxlength="200" />
+      </div>
+      <div id="edit-deck-error" class="auth-error hidden"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" onclick="closeModal('modal-edit-deck')">Cancel</button>
+        <button type="submit" class="btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Add Card -->
+<div id="modal-add-card" class="modal-overlay hidden" onclick="closeModal('modal-add-card')">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <h2 class="modal-title">新しい単語<span>Add Flashcard</span></h2>
+    <form onsubmit="handleAddCard(event)">
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">Kanji / Word</label>
+          <input id="card-kanji-input" type="text" class="field-input kanji-input" placeholder="食べる" required maxlength="200" />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Reading (Hiragana)</label>
+          <input id="card-reading-input" type="text" class="field-input" placeholder="たべる" maxlength="200" />
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Meaning</label>
+        <input id="card-meaning-input" type="text" class="field-input" placeholder="to eat" required maxlength="500" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">Example <span class="label-opt">(optional)</span></label>
+        <input id="card-example-input" type="text" class="field-input" placeholder="ご飯を食べる。I eat a meal." maxlength="1000" />
+      </div>
+      <div id="add-card-error" class="auth-error hidden"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" onclick="closeModal('modal-add-card')">Cancel</button>
+        <button type="submit" class="btn-primary">Add Card</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Card -->
+<div id="modal-edit-card" class="modal-overlay hidden" onclick="closeModal('modal-edit-card')">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <h2 class="modal-title">単語編集<span>Edit Card</span></h2>
+    <input type="hidden" id="edit-card-id" />
+    <form onsubmit="handleEditCard(event)">
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">Kanji / Word</label>
+          <input id="edit-card-kanji" type="text" class="field-input kanji-input" required maxlength="200" />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Reading (Hiragana)</label>
+          <input id="edit-card-reading" type="text" class="field-input" maxlength="200" />
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Meaning</label>
+        <input id="edit-card-meaning" type="text" class="field-input" required maxlength="500" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">Example <span class="label-opt">(optional)</span></label>
+        <input id="edit-card-example" type="text" class="field-input" maxlength="1000" />
+      </div>
+      <div id="edit-card-error" class="auth-error hidden"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" onclick="closeModal('modal-edit-card')">Cancel</button>
+        <button type="submit" class="btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Bulk Import -->
+<div id="modal-import" class="modal-overlay hidden" onclick="closeModal('modal-import')">
+  <div class="modal-card modal-wide" onclick="event.stopPropagation()">
+    <h2 class="modal-title">一括インポート<span>Bulk Import Cards</span></h2>
+
+    <div class="modal-body">
+      <div class="import-format-hint">
+        <strong>Format:</strong> One card per line — tab or comma separated<br>
+        <code>Kanji [Tab] Reading [Tab] Meaning [Tab] Example (optional)</code><br>
+        <span style="color:var(--outline)">Lines starting with # are skipped. Compatible with Anki exports.</span>
+      </div>
+
+      <div class="import-drop-zone" id="import-drop-zone">
+        <input type="file" id="import-file" accept=".csv,.tsv,.txt" class="hidden" onchange="handleImportFile(event)" />
+        <div class="drop-icon">📄</div>
+        <div class="drop-label">Drop a .csv / .tsv / .txt file here</div>
+        <button type="button" class="btn-ghost btn-sm" onclick="document.getElementById('import-file').click()">Browse File</button>
+      </div>
+
+      <div class="import-or">— or paste text below —</div>
+
+      <textarea id="import-textarea" class="import-textarea"
+        placeholder="食べる&#9;たべる&#9;to eat&#9;ご飯を食べる。&#10;飲む&#9;のむ&#9;to drink&#10;書く&#9;かく&#9;to write"
+        oninput="onImportTextChange()" rows="6"></textarea>
+
+      <div id="import-preview-wrap" class="hidden">
+        <div class="import-preview-header">
+          <span id="import-preview-count" class="import-count"></span>
+        </div>
+        <div class="import-preview-scroll">
+          <table class="import-preview-table">
+            <thead><tr><th>#</th><th>Kanji</th><th>Reading</th><th>Meaning</th><th>Example</th></tr></thead>
+            <tbody id="import-preview-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="import-error" class="auth-error hidden"></div>
+    </div><!-- /.modal-body -->
+
+    <div class="modal-actions">
+      <button type="button" class="btn-ghost" onclick="closeModal('modal-import')">Cancel</button>
+      <button type="button" class="btn-primary" id="btn-confirm-import" onclick="handleConfirmImport()" disabled>
+        Import <span id="import-btn-count">0</span> Cards
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Study Mode Selector -->
+<div id="modal-study-mode" class="modal-overlay hidden" onclick="closeModal('modal-study-mode')">
+  <div class="modal-card modal-wide" onclick="event.stopPropagation()">
+    <h2 class="modal-title">学習モード<span>Choose Study Mode</span></h2>
+    <div class="mode-select-grid">
+      <button class="mode-choice-card" onclick="startBrowse()">
+        <div class="mode-icon">📖</div>
+        <div class="mode-name">Browse All</div>
+        <div class="mode-desc">See every card in order. Go forward and backward freely. No schedule — just explore.</div>
+        <div class="mode-tag">全カード</div>
+      </button>
+      <button class="mode-choice-card accent" onclick="startPractice()">
+        <div class="mode-icon">🎯</div>
+        <div class="mode-name">Practice (SRS)</div>
+        <div class="mode-desc">Only cards due today. Rate each card to schedule when it comes back. Builds long-term memory.</div>
+        <div class="mode-tag">復習カード</div>
+      </button>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-ghost" onclick="closeModal('modal-study-mode')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Generic Confirm Dialog -->
+<div id="modal-confirm" class="modal-overlay hidden" onclick="closeModal('modal-confirm')">
+  <div class="modal-card modal-confirm-card" onclick="event.stopPropagation()">
+    <div class="confirm-icon" id="confirm-icon">⚠</div>
+    <h2 class="confirm-title" id="confirm-title">Are you sure?</h2>
+    <p class="confirm-body" id="confirm-body">This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button type="button" class="btn-ghost" onclick="closeModal('modal-confirm')">Cancel</button>
+      <button type="button" class="btn-danger" id="btn-confirm-action">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast hidden"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

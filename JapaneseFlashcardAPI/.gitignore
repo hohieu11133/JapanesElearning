@@ -1,0 +1,26 @@
+## .NET / ASP.NET Core
+*.user
+*.suo
+*.vs/
+.vs/
+bin/
+obj/
+*.log
+
+## Secrets — never commit these
+appsettings.Production.json
+appsettings.Secrets.json
+
+## EF Core migrations snapshots are intentionally kept
+# Migrations/
+
+## Rider / JetBrains
+.idea/
+
+## VS Code
+.vscode/
+!.vscode/extensions.json
+
+## OS
+.DS_Store
+Thumbs.db
