@@ -6,7 +6,7 @@ services:
     container_name: japane-learn-db
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "Password123!@#"
+      SA_PASSWORD: "${DB_PASSWORD}"
       MSSQL_PID: "Express"
     ports:
       - "1433:1433"
@@ -26,8 +26,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - FRONTEND_PATH=/app/frontend
-      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=JapaneseFlashcardDb;User Id=sa;Password=Password123!@#;TrustServerCertificate=True;
-      - Jwt__Key=Mot_Cai_Key_That_Dai_Va_Bi_Mat_Hon_32_Ky_Tu
+      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=JapaneseFlashcardDb;User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=True;
+      - Jwt__Key=${JWT_KEY}
       - Jwt__Issuer=JapaneseFlashcardAPI
       - Jwt__Audience=JapaneseFlashcardClient
       - Jwt__ExpiresInHours=24
