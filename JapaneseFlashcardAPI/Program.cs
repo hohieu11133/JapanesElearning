@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -88,12 +89,35 @@ builder.Services.AddSwaggerGen(opts =>
         opts.IncludeXmlComments(xmlPath);
 });
 
-// ── CORS (dev-friendly) ───────────────────────────────────────────────────────
+// ── Rate Limiting ─────────────────────────────────────────────────────────────
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("fixed", opt =>
+    {
+        opt.PermitLimit = 5; // 5 requests per window
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        opt.QueueLimit = 2;
+    });
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+});
+
+// ── CORS (Secure) ─────────────────────────────────────────────────────────
 builder.Services.AddCors(opts =>
     opts.AddDefaultPolicy(policy =>
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod()));
+    {
+        var allowedOrigins = builder.Configuration.GetSection("CorsOrigins").Get<string[]>() 
+            ?? new[] { "http://localhost:5000", "https://api.gitplatform.io.vn", "https://gitplatform.io.vn" };
+            
+        if (allowedOrigins.Contains("*"))
+        {
+            policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+        }
+        else
+        {
+            policy.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod();
+        }
+    }));
 
 // ─────────────────────────────────────────────────────────────────────────────
 var app = builder.Build();
@@ -169,6 +193,7 @@ app.UseSwaggerUI(c =>
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter();
 app.MapControllers();
 
 app.Run();

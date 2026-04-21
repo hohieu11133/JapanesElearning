@@ -8,6 +8,7 @@ using JapaneseFlashcardAPI.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace JapaneseFlashcardAPI.Controllers;
 
@@ -15,6 +16,7 @@ namespace JapaneseFlashcardAPI.Controllers;
 /// Handles user registration and login, issuing JWT tokens.
 /// </summary>
 [ApiController]
+[EnableRateLimiting("fixed")]
 [Route("api/auth")]
 [Produces("application/json")]
 public class AuthController : ControllerBase
