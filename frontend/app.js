@@ -3,7 +3,9 @@
 // API: http://localhost:5000
 // ═══════════════════════════════════════════════════════════════════════════
 
-const API = `${window.location.protocol}//${window.location.hostname}:5000`;
+const API = window.location.protocol === 'file:' || ((window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port !== '5000') 
+  ? 'http://localhost:5000' 
+  : window.location.origin;
 
 // ── Text-to-Speech (Web Speech API) ─────────────────────────────────────────
 let _ttsVoice = null;
