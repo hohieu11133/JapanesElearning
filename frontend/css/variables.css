@@ -1,0 +1,36 @@
+/* ── Tokens ─────────────────────────────────────────────────────────────── */
+:root {
+  --surface:               #111319;
+  --surface-low:           #191b22;
+  --surface-container:     #1e1f26;
+  --surface-high:          #282a30;
+  --surface-highest:       #33343b;
+  --surface-bright:        #373940;
+  --surface-dim:           #111319;
+
+  --primary:               #ffb4a8;
+  --primary-container:     #ff5542;
+  --on-primary:            #690000;
+  --on-primary-container:  #5c0000;
+
+  --secondary:             #ffb961;
+  --secondary-container:   #e89300;
+
+  --tertiary:              #4ae183;
+  --tertiary-container:    #00a657;
+
+  --on-surface:            #e2e2eb;
+  --on-surface-variant:    #e7bdb6;
+  --outline:               #ae8882;
+  --outline-variant:       #5d3f3b;
+
+  --error:                 #ffb4ab;
+  --error-container:       #93000a;
+
+  --font-serif:  'Noto Serif JP', serif;
+  --font-body:   'Plus Jakarta Sans', sans-serif;
+  --font-label:  'Inter', sans-serif;
+
+  --radius-sm:  4px; --radius-md: 8px; --radius-lg: 16px;
+  --radius-xl:  24px; --radius-pill: 50px;
+}

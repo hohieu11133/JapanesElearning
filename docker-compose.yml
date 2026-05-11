@@ -1,6 +1,6 @@
 services:
 
-  # ── SQL Server 2022 ─────────────────────────────────────────────────────────
+  # ── SQL Server 2022 (Local DB) ──────────────────────────────────────────────
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: japane-learn-db
@@ -24,7 +24,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - FRONTEND_PATH=/app/frontend
-      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=JapaneseFlashcardDb;User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=True;
+      - "ConnectionStrings__DefaultConnection=Server=db,1433;Database=JapaneseFlashcardDb;User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=True;"
       - Jwt__Key=${JWT_KEY}
       - Jwt__Issuer=JapaneseFlashcardAPI
       - Jwt__Audience=JapaneseFlashcardClient

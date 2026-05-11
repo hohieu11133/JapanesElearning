@@ -27,13 +27,14 @@ jobs:
           tags: kyhieu/japane-learn:latest
 
   # Chờ build xong, gọi máy chủ nội bộ tự pull code
-  deploy_job:
+  # Deploy lên Ubuntu (Primary Server) bằng self-hosted runner
+  deploy_ubuntu:
     needs: build_job
-    runs-on: self-hosted  # <--- Báo cho GitHub dùng máy chủ riêng của bạn để chạy
+    runs-on: self-hosted
     steps:
       - name: Deploy on Local Server
         run: |
-          # Nếu bạn có lệnh sudo bảo vệ docker thì phải thêm mật khẩu hoặc mở quyền passless sudo
           cd ~/app/japane-learn-prod
+          docker compose down
           docker compose pull api
-          docker compose up -d api
+          docker compose up -d
