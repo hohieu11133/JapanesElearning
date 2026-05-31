@@ -37,6 +37,9 @@ public class Flashcard
     /// <summary>Current inter-repetition interval in days.</summary>
     public int Interval { get; set; } = 1;
 
+    /// <summary>Số lần ôn tập đúng liên tiếp.</summary>
+    public int Repetitions { get; set; } = 0;
+
     /// <summary>
     /// Easiness factor — controls how fast the interval grows.
     /// Must be ≥ 1.3 (SM-2 lower bound).

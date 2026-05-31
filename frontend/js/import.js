@@ -32,18 +32,44 @@ export function onImportTextChange() {
   previewImportCards(cards, errors);
 }
 
+export function parseCsvLine(line, delimiter) {
+  const result = [];
+  let current = '';
+  let inQuotes = false;
+  
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    
+    if (char === '"') {
+      inQuotes = !inQuotes;
+    } else if (char === delimiter && !inQuotes) {
+      result.push(current.trim());
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  result.push(current.trim());
+  
+  return result.map(val => {
+    if (val.startsWith('"') && val.endsWith('"')) {
+      return val.slice(1, -1).trim();
+    }
+    return val;
+  });
+}
+
 export function parseImportText(text) {
   const lines = text.split('\n');
   const cards = [];
   const errors = [];
 
   for (let i = 0; i < lines.length; i++) {
-    const raw = lines[i];
-    if (!raw.trim() || raw.trim().startsWith('#')) continue;
+    const raw = lines[i].trim();
+    if (!raw || raw.startsWith('#')) continue;
 
-    // Support tab-separated and comma-separated
-    let cols = raw.includes('\t') ? raw.split('\t') : raw.split(',');
-    cols = cols.map(c => c.trim());
+    const delimiter = raw.includes('\t') ? '\t' : ',';
+    const cols = parseCsvLine(raw, delimiter);
 
     const [kanji, reading, meaning, example] = cols;
     if (!kanji) { errors.push(`Row ${i + 1}: Kanji is empty.`); continue; }

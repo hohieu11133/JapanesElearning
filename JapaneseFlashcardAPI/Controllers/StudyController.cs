@@ -62,7 +62,7 @@ public class StudyController : ControllerBase
             .Select(f => new FlashcardResponse(
                 f.Id, f.DeckId, f.Kanji, f.Reading,
                 f.Meaning, f.ExampleSentence,
-                f.NextReviewDate, f.Interval, f.EaseFactor))
+                f.NextReviewDate, f.Interval, f.EaseFactor, f.Repetitions))
             .ToListAsync();
 
         return Ok(cards);
@@ -120,5 +120,59 @@ public class StudyController : ControllerBase
             card.Interval,
             card.EaseFactor,
             card.NextReviewDate));
+    }
+
+    // GET api/study/stats
+    /// <summary>
+    /// Fetch overall stats for the dashboard: due counts, active decks, total cards, and review streak.
+    /// </summary>
+    [HttpGet("api/study/stats")]
+    [ProducesResponseType(typeof(StudyStatsResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetDashboardStats()
+    {
+        int userId = CurrentUserId;
+        var now = DateTime.UtcNow;
+
+        int dueToday = await _db.Flashcards
+            .CountAsync(f => f.Deck.UserId == userId && f.NextReviewDate <= now);
+
+        int totalCards = await _db.Flashcards
+            .CountAsync(f => f.Deck.UserId == userId);
+
+        int activeDecks = await _db.Decks
+            .CountAsync(d => d.UserId == userId);
+
+        var reviewDates = await _db.ReviewLogs
+            .Where(r => r.UserId == userId)
+            .Select(r => r.ReviewedAt.Date)
+            .Distinct()
+            .OrderByDescending(d => d)
+            .ToListAsync();
+
+        int streak = 0;
+        if (reviewDates.Any())
+        {
+            var today = DateTime.UtcNow.Date;
+            var yesterday = today.AddDays(-1);
+            var firstDate = reviewDates[0];
+
+            if (firstDate == today || firstDate == yesterday)
+            {
+                streak = 1;
+                for (int i = 0; i < reviewDates.Count - 1; i++)
+                {
+                    if ((reviewDates[i] - reviewDates[i + 1]).TotalDays == 1)
+                    {
+                        streak++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return Ok(new StudyStatsResponse(dueToday, streak, totalCards, activeDecks));
     }
 }

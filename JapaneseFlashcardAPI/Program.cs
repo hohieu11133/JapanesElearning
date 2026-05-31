@@ -139,9 +139,24 @@ using (var scope = app.Services.CreateScope())
         {
             bool created = db.Database.EnsureCreated();
             if (created)
+            {
                 logger.LogInformation("✅ Database & all tables created successfully.");
+            }
             else
+            {
                 logger.LogInformation("✅ Database schema already exists — data preserved.");
+                // Ensure the new 'Repetitions' column exists on existing DB schemas
+                db.Database.ExecuteSqlRaw(@"
+                    IF NOT EXISTS (
+                        SELECT * FROM sys.columns 
+                        WHERE object_id = OBJECT_ID('Flashcards') AND name = 'Repetitions'
+                    )
+                    BEGIN
+                        ALTER TABLE Flashcards ADD Repetitions INT NOT NULL DEFAULT 0;
+                    END
+                ");
+                logger.LogInformation("✅ Schema verification: Flashcards table has 'Repetitions' column.");
+            }
             break; // success — exit retry loop
         }
         catch (Exception ex) when (attempt < maxRetries)

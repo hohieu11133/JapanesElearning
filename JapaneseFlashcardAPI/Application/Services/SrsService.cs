@@ -46,17 +46,27 @@ public class SrsService : ISrsService
         ef = ef + (0.1 - (4 - q) * (0.08 + (4 - q) * 0.02));
         ef = Math.Max(ef, MinEaseFactor);
 
-        // ── 2. Update Interval ──────────────────────────────────────
+        // ── 2. Update Interval & Repetitions ────────────────────────
         if (rating == 1)
         {
-            // Forgot: reset card so it is shown again tomorrow
+            // Forgot: reset repetitions and set interval to 1 day
+            card.Repetitions = 0;
             card.Interval = 1;
+        }
+        else if (rating == 2)
+        {
+            // Hard: keep current interval (but still count as successful repetition and apply EF penalty)
+            card.Repetitions++;
+            // card.Interval remains unchanged
         }
         else
         {
-            card.Interval = card.Interval switch
+            // Good (3) or Easy (4): advance repetitions and interval
+            card.Repetitions++;
+            card.Interval = card.Repetitions switch
             {
-                1 => 6,                                 // second successful review
+                1 => 1,
+                2 => 6,
                 _ => (int)Math.Round(card.Interval * ef, MidpointRounding.AwayFromZero)
             };
         }

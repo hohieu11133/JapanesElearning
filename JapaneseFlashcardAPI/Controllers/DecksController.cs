@@ -45,9 +45,10 @@ public class DecksController : ControllerBase
     public async Task<IActionResult> GetDecks()
     {
         int userId = CurrentUserId;
+        var now = DateTime.UtcNow;
         var decks = await _db.Decks
             .Where(d => d.UserId == userId)
-            .Select(d => new DeckResponse(d.Id, d.Title, d.UserId, d.CreatedAt, d.Flashcards.Count))
+            .Select(d => new DeckResponse(d.Id, d.Title, d.UserId, d.CreatedAt, d.Flashcards.Count, d.Flashcards.Count(f => f.NextReviewDate <= now)))
             .ToListAsync();
         return Ok(decks);
     }
@@ -60,9 +61,10 @@ public class DecksController : ControllerBase
     public async Task<IActionResult> GetDeck(int deckId)
     {
         int userId = CurrentUserId;
+        var now = DateTime.UtcNow;
         var deck = await _db.Decks
             .Where(d => d.Id == deckId && d.UserId == userId)
-            .Select(d => new DeckResponse(d.Id, d.Title, d.UserId, d.CreatedAt, d.Flashcards.Count))
+            .Select(d => new DeckResponse(d.Id, d.Title, d.UserId, d.CreatedAt, d.Flashcards.Count, d.Flashcards.Count(f => f.NextReviewDate <= now)))
             .FirstOrDefaultAsync();
         return deck is null ? NotFound() : Ok(deck);
     }
@@ -81,7 +83,7 @@ public class DecksController : ControllerBase
         _db.Decks.Add(deck);
         await _db.SaveChangesAsync();
 
-        var response = new DeckResponse(deck.Id, deck.Title, deck.UserId, deck.CreatedAt, 0);
+        var response = new DeckResponse(deck.Id, deck.Title, deck.UserId, deck.CreatedAt, 0, 0);
         return CreatedAtAction(nameof(GetDeck), new { deckId = deck.Id }, response);
     }
 
@@ -102,7 +104,8 @@ public class DecksController : ControllerBase
         await _db.SaveChangesAsync();
 
         int count = await _db.Flashcards.CountAsync(f => f.DeckId == deckId);
-        return Ok(new DeckResponse(deck.Id, deck.Title, deck.UserId, deck.CreatedAt, count));
+        int dueCount = await _db.Flashcards.CountAsync(f => f.DeckId == deckId && f.NextReviewDate <= DateTime.UtcNow);
+        return Ok(new DeckResponse(deck.Id, deck.Title, deck.UserId, deck.CreatedAt, count, dueCount));
     }
 
     // DELETE api/decks/{deckId}
@@ -142,7 +145,7 @@ public class DecksController : ControllerBase
             .Select(f => new FlashcardResponse(
                 f.Id, f.DeckId, f.Kanji, f.Reading,
                 f.Meaning, f.ExampleSentence,
-                f.NextReviewDate, f.Interval, f.EaseFactor))
+                f.NextReviewDate, f.Interval, f.EaseFactor, f.Repetitions))
             .ToListAsync();
 
         return Ok(cards);
@@ -309,5 +312,5 @@ public class DecksController : ControllerBase
     private static FlashcardResponse MapToResponse(Flashcard card) =>
         new(card.Id, card.DeckId, card.Kanji, card.Reading,
             card.Meaning, card.ExampleSentence,
-            card.NextReviewDate, card.Interval, card.EaseFactor);
+            card.NextReviewDate, card.Interval, card.EaseFactor, card.Repetitions);
 }

@@ -32,7 +32,8 @@ public record DeckResponse(
     string   Title,
     int      UserId,
     DateTime CreatedAt,
-    int      CardCount
+    int      CardCount,
+    int      DueCount
 );
 
 // ── Flashcard ───────────────────────────────────────────────────────────────
@@ -53,7 +54,8 @@ public record FlashcardResponse(
     string?  ExampleSentence,
     DateTime NextReviewDate,
     int      Interval,
-    decimal  EaseFactor
+    decimal  EaseFactor,
+    int      Repetitions
 );
 
 // ── Study ───────────────────────────────────────────────────────────────────
@@ -68,6 +70,13 @@ public record ReviewResponse(
     int      NewInterval,
     decimal  NewEaseFactor,
     DateTime NextReviewDate
+);
+
+public record StudyStatsResponse(
+    int DueToday,
+    int DayStreak,
+    int TotalCards,
+    int ActiveDecks
 );
 
 // ── Card Management (Edit) ───────────────────────────────────────────────────

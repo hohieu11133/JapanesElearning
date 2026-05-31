@@ -10,6 +10,22 @@ export async function loadDecks() {
   catch (err) { console.error('loadDecks:', err); state.decks = []; }
 }
 
+export async function loadDashboardStats() {
+  try {
+    const stats = await apiFetch('/api/study/stats');
+    const dueEl = document.getElementById('stat-due');
+    const streakEl = document.getElementById('stat-streak');
+    const totalEl = document.getElementById('stat-total');
+    const decksEl = document.getElementById('stat-decks');
+    if (dueEl) dueEl.textContent = stats.dueToday;
+    if (streakEl) streakEl.textContent = `🔥 ${stats.dayStreak}`;
+    if (totalEl) totalEl.textContent = stats.totalCards;
+    if (decksEl) decksEl.textContent = stats.activeDecks;
+  } catch (err) {
+    console.error('loadDashboardStats:', err);
+  }
+}
+
 export function renderDashboard() {
   const total = state.decks.reduce((s, d) => s + (d.cardCount || 0), 0);
   document.getElementById('stat-total').textContent = total;
@@ -22,6 +38,7 @@ export function renderDashboard() {
     return;
   }
   grid.innerHTML = state.decks.slice(0, 4).map(d => deckCardHTML(d, true)).join('');
+  loadDashboardStats();
 }
 
 export function renderDecksPage() {

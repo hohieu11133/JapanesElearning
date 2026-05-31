@@ -124,13 +124,8 @@ export function loadStudyCard() {
   // Front: Meaning (recall — see English, recall kanji)
   document.getElementById('card-meaning-front').textContent = card.meaning;
   const exFront = document.getElementById('card-example-front');
-  if (card.exampleSentence) {
-    exFront.textContent = card.exampleSentence;
-    exFront.style.display = '';
-  } else {
-    exFront.textContent = '';
-    exFront.style.display = 'none';
-  }
+  exFront.textContent = '';
+  exFront.style.display = 'none';
 
   // Back: Kanji + Reading + Example
   document.getElementById('card-kanji').textContent = card.kanji;
