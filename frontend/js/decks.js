@@ -33,8 +33,19 @@ export async function renderDashboard() {
   document.getElementById('stat-decks').textContent = state.decks.length;
   document.getElementById('stat-due').textContent = '–';
 
-  // Render dashboard heatmap (3 months)
-  drawHeatmap('dash-heatmap-grid', 3);
+  // Load detailed stats for heatmap
+  let heatmapData = [];
+  try {
+    const detailed = await apiFetch('/api/study/detailed-stats');
+    if (detailed && detailed.heatmap) {
+      heatmapData = detailed.heatmap;
+    }
+  } catch (e) {
+    console.error('loadDashboard heatmap:', e);
+  }
+
+  // Render dashboard heatmap (3 months) using real logs
+  drawHeatmap('dash-heatmap-grid', 3, heatmapData);
 
   const grid = document.getElementById('dash-deck-grid');
   if (!state.decks.length) {

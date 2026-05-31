@@ -4,7 +4,7 @@ import { esc } from './utils.js';
 import { loadDecks } from './decks.js';
 
 // ── Heatmap Drawing ──────────────────────────────────────────────────────────
-export function drawHeatmap(elementId, monthsLimit = 12) {
+export function drawHeatmap(elementId, monthsLimit = 12, realLogs = []) {
   const grid = document.getElementById(elementId);
   if (!grid) return;
 
@@ -20,30 +20,38 @@ export function drawHeatmap(elementId, monthsLimit = 12) {
   const msBetween = now.getTime() - startDate.getTime();
   const totalDays = Math.ceil(msBetween / (24 * 60 * 60 * 1000)) + 1;
 
+  // Index realLogs by date: "yyyy-MM-dd" -> count
+  const logsMap = {};
+  if (realLogs && Array.isArray(realLogs)) {
+    realLogs.forEach(log => {
+      if (log.date) {
+        logsMap[log.date] = log.count;
+      }
+    });
+  }
+
   let html = '';
   for (let i = 0; i < totalDays; i++) {
     const currentDate = new Date(startDate);
     currentDate.setDate(startDate.getDate() + i);
 
-    const dayStr = currentDate.toDateString();
-    // Deterministic hash based on date string for simulated activity
-    const hash = dayStr.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    // Format date as yyyy-MM-dd
+    const yyyy = currentDate.getFullYear();
+    const mm = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const dd = String(currentDate.getDate()).padStart(2, '0');
+    const dateStr = `${yyyy}-${mm}-${dd}`;
+
+    const count = logsMap[dateStr] || 0;
     
     let level = 0;
-    const randVal = (hash % 100);
-    if (randVal < 45) level = 0;
-    else if (randVal < 75) level = 1;
-    else if (randVal < 90) level = 2;
-    else if (randVal < 97) level = 3;
-    else level = 4;
-
-    // Today is active if user is studying
-    const isToday = currentDate.toDateString() === now.toDateString();
-    if (isToday) {
-      level = 3;
+    if (count > 0) {
+      if (count <= 3) level = 1;
+      else if (count <= 8) level = 2;
+      else if (count <= 15) level = 3;
+      else level = 4;
     }
 
-    const title = `${currentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}: Level ${level} Activity`;
+    const title = `${currentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}: ${count} card${count !== 1 ? 's' : ''} reviewed`;
     html += `<div class="heatmap-cell level-${level}" title="${title}"></div>`;
   }
   
@@ -154,7 +162,7 @@ export function renderWeeklyOutlook(elementId, allCards) {
 export async function renderStatsPage() {
   await loadDecks();
   
-  // Load study stats from C# backend API
+  // Load basic stats
   let statsObj = { dueToday: 0, dayStreak: 0, totalCards: 0, activeDecks: 0 };
   try {
     statsObj = await apiFetch('/api/study/stats') || statsObj;
@@ -162,13 +170,21 @@ export async function renderStatsPage() {
     console.error('renderStatsPage loadStats:', err);
   }
 
-  // Populate stats cards
+  // Populate basic stats cards
   document.getElementById('stats-total').textContent = statsObj.totalCards;
   document.getElementById('stats-decks').textContent = statsObj.activeDecks;
   document.getElementById('stats-due').textContent = statsObj.dueToday;
   document.getElementById('stats-streak').textContent = `🔥 ${statsObj.dayStreak}`;
 
-  // Fetch all cards to compute progress donuts & forecasts
+  // Fetch detailed stats (heatmap, retention, session logs) from database
+  let detailedObj = { retentionRate: 100, heatmap: [], recentSessions: [] };
+  try {
+    detailedObj = await apiFetch('/api/study/detailed-stats') || detailedObj;
+  } catch (err) {
+    console.error('renderStatsPage loadDetailedStats:', err);
+  }
+
+  // Fetch all cards for distribution & outlook
   let allCards = [];
   try {
     const cardsLists = await Promise.all(state.decks.map(async (d) => {
@@ -184,37 +200,50 @@ export async function renderStatsPage() {
   const masteredCount = allCards.filter(c => c.repetitions >= 4).length;
   const learningCount = allCards.filter(c => c.repetitions > 0 && c.repetitions < 4).length;
 
-  // Render Charts
-  drawHeatmap('stats-heatmap-grid', 12);
+  // Render Heatmap (12 months using real logs)
+  drawHeatmap('stats-heatmap-grid', 12, detailedObj.heatmap);
+
+  // Render Vocab Donut
   updateDonutChart('stats', masteredCount, learningCount, totalCount);
+
+  // Render Weekly Outlook
   renderWeeklyOutlook('stats-outlook-bar-wrap', allCards);
+
+  // Render circular retention gauge dynamically
+  const retentionValEl = document.getElementById('stats-retention-val');
+  const retentionCircleEl = document.getElementById('stats-retention-circle');
+  if (retentionValEl) {
+    retentionValEl.textContent = `${detailedObj.retentionRate}%`;
+  }
+  if (retentionCircleEl) {
+    const circ = 251.2;
+    const offset = circ - (detailedObj.retentionRate / 100) * circ;
+    retentionCircleEl.style.strokeDashoffset = offset;
+  }
 
   // Render Recent Sessions
   const historyTbody = document.getElementById('stats-history-tbody');
   if (historyTbody) {
-    // Generate realistic session entries or check localStorage
-    let sessions = [
-      { date: 'Today', deck: state.decks[0]?.title || 'Japanese Vocab', count: 15, accuracy: 93, time: '4m 12s', newWords: 2 },
-      { date: 'Yesterday', deck: state.decks[0]?.title || 'Japanese Vocab', count: 24, accuracy: 87, time: '7m 45s', newWords: 4 },
-      { date: '2 days ago', deck: state.decks[1]?.title || 'Core Kanji', count: 40, accuracy: 90, time: '11m 30s', newWords: 8 }
-    ];
-    
-    // Save to localStorage if actual study finished
-    const stored = localStorage.getItem('study_sessions_log');
-    if (stored) {
-      try { sessions = JSON.parse(stored).concat(sessions).slice(0, 5); } catch(e) {}
+    const sessions = detailedObj.recentSessions || [];
+    if (sessions.length === 0) {
+      historyTbody.innerHTML = `
+        <tr>
+          <td colspan="6" class="empty-state" style="padding: 2rem 1rem;">
+            No review history found. Complete a study session to log your progress!
+          </td>
+        </tr>`;
+    } else {
+      historyTbody.innerHTML = sessions.map(s => `
+        <tr>
+          <td class="px-6 py-4">${s.date}</td>
+          <td><span class="stats-deck-chip">${esc(s.deck)}</span></td>
+          <td>${s.count}</td>
+          <td class="${s.accuracy >= 85 ? 'text-tertiary' : 'text-secondary'}">${s.accuracy}%</td>
+          <td>${s.timeSpent}</td>
+          <td class="text-right font-bold text-primary">${s.newWords}</td>
+        </tr>
+      `).join('');
     }
-
-    historyTbody.innerHTML = sessions.map(s => `
-      <tr>
-        <td class="px-6 py-4">${s.date}</td>
-        <td><span class="stats-deck-chip">${esc(s.deck)}</span></td>
-        <td>${s.count}</td>
-        <td class="${s.accuracy >= 85 ? 'text-tertiary' : 'text-secondary'}">${s.accuracy}%</td>
-        <td>${s.time}</td>
-        <td class="text-right font-bold text-primary">${s.newWords}</td>
-      </tr>
-    `).join('');
   }
 
   // Render Decks overview list

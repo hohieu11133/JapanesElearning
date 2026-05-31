@@ -549,9 +549,9 @@
             <div class="retention-gauge relative w-24 h-24 flex items-center justify-center shrink-0">
               <svg class="absolute inset-0 w-full h-full transform -rotate-90">
                 <circle cx="48" cy="48" r="40" stroke="var(--surface-high)" stroke-width="8" fill="transparent"></circle>
-                <circle cx="48" cy="48" r="40" stroke="var(--tertiary)" stroke-width="8" fill="transparent" stroke-dasharray="251.2" stroke-dashoffset="32.6"></circle>
+                <circle id="stats-retention-circle" cx="48" cy="48" r="40" stroke="var(--tertiary)" stroke-width="8" fill="transparent" stroke-dasharray="251.2" stroke-dashoffset="32.6"></circle>
               </svg>
-              <span class="text-xl font-bold font-serif text-tertiary">87%</span>
+              <span id="stats-retention-val" class="text-xl font-bold font-serif text-tertiary">87%</span>
             </div>
             <div>
               <h4 class="font-bold text-sm mb-1">Retention Rate</h4>

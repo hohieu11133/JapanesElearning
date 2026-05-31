@@ -63,7 +63,11 @@ export async function handleAddCard(e) {
     });
     closeModal('modal-add-card');
     showToast('Card added!', 'success');
-    await loadAllCards(state.currentDeckId);
+    if (window.openDeck) {
+      await window.openDeck(state.currentDeckId);
+    } else {
+      await loadAllCards(state.currentDeckId);
+    }
   } catch (err) { showError(errEl, err.message); }
 }
 
@@ -95,8 +99,12 @@ export async function handleEditCard(e) {
     const idx = state.currentCards.findIndex(c => c.id === cardId);
     if (idx !== -1) state.currentCards[idx] = updated;
     closeModal('modal-edit-card');
-    renderAllCardsTable(state.currentCards);
     showToast('Card updated!', 'success');
+    if (window.openDeck) {
+      await window.openDeck(state.currentDeckId);
+    } else {
+      renderAllCardsTable(state.currentCards);
+    }
   } catch (err) { showError(errEl, err.message); }
 }
 
@@ -107,10 +115,14 @@ export function confirmDeleteCard(cardId, kanji) {
     try {
       await apiFetch(`/api/decks/${state.currentDeckId}/cards/${cardId}`, { method: 'DELETE' });
       state.currentCards = state.currentCards.filter(c => c.id !== cardId);
-      renderAllCardsTable(state.currentCards);
-      const deck = state.decks.find(d => d.id === state.currentDeckId);
-      if (deck) deck.cardCount = state.currentCards.length;
       showToast('Card deleted.', 'success');
+      if (window.openDeck) {
+        await window.openDeck(state.currentDeckId);
+      } else {
+        renderAllCardsTable(state.currentCards);
+        const deck = state.decks.find(d => d.id === state.currentDeckId);
+        if (deck) deck.cardCount = state.currentCards.length;
+      }
     } catch (err) { showToast(err.message, 'error'); }
   });
 }

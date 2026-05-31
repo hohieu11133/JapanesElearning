@@ -175,4 +175,81 @@ public class StudyController : ControllerBase
 
         return Ok(new StudyStatsResponse(dueToday, streak, totalCards, activeDecks));
     }
+
+    // GET api/study/detailed-stats
+    /// <summary>
+    /// Fetch detailed statistics for heatmap calendar, retention rate, and recent session logs.
+    /// </summary>
+    [HttpGet("api/study/detailed-stats")]
+    [ProducesResponseType(typeof(DetailedStatsResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetDetailedStats()
+    {
+        int userId = CurrentUserId;
+
+        // 1. Calculate Retention Rate (rating >= 2 means successful recall)
+        int totalReviews = await _db.ReviewLogs.CountAsync(r => r.UserId == userId);
+        double retentionRate = 100;
+        if (totalReviews > 0)
+        {
+            int correctReviews = await _db.ReviewLogs.CountAsync(r => r.UserId == userId && r.Rating >= 2);
+            retentionRate = Math.Round(((double)correctReviews / totalReviews) * 100);
+        }
+
+        // 2. Heatmap (past 12 months review count grouped by date)
+        var cutoff = DateTime.UtcNow.Date.AddYears(-1);
+        var heatmapRaw = await _db.ReviewLogs
+            .Where(r => r.UserId == userId && r.ReviewedAt >= cutoff)
+            .GroupBy(r => r.ReviewedAt.Date)
+            .Select(g => new {
+                Date = g.Key,
+                Count = g.Count()
+            })
+            .ToListAsync();
+
+        var heatmapData = heatmapRaw
+            .Select(x => new HeatmapEntry(x.Date.ToString("yyyy-MM-dd"), x.Count))
+            .ToList();
+
+        // 3. Recent Sessions (grouped logs)
+        var logs = await _db.ReviewLogs
+            .Include(r => r.Flashcard)
+            .ThenInclude(f => f.Deck)
+            .Where(r => r.UserId == userId)
+            .OrderByDescending(r => r.ReviewedAt)
+            .Take(200) // load a reasonable history of raw logs
+            .ToListAsync();
+
+        var recentSessions = logs
+            .GroupBy(l => new { Date = l.ReviewedAt.Date, DeckTitle = l.Flashcard.Deck.Title })
+            .OrderByDescending(g => g.Key.Date)
+            .Take(5)
+            .Select(g => {
+                int total = g.Count();
+                int correct = g.Count(x => x.Rating >= 2);
+                int accuracy = total > 0 ? (int)Math.Round((double)correct / total * 100) : 0;
+                
+                int seconds = total * 6; // estimate time spent
+                string timeStr = seconds < 60 ? $"{seconds}s" : $"{seconds / 60}m {seconds % 60}s";
+                
+                int newWords = g.Count(x => x.Flashcard.Repetitions <= 1);
+                
+                string dateStr;
+                var age = (DateTime.UtcNow.Date - g.Key.Date).Days;
+                if (age == 0) dateStr = "Today";
+                else if (age == 1) dateStr = "Yesterday";
+                else dateStr = g.Key.Date.ToString("MMM dd, yyyy");
+
+                return new SessionLogEntry(
+                    dateStr,
+                    g.Key.DeckTitle,
+                    total,
+                    accuracy,
+                    timeStr,
+                    newWords
+                );
+            })
+            .ToList();
+
+        return Ok(new DetailedStatsResponse(retentionRate, heatmapData, recentSessions));
+    }
 }

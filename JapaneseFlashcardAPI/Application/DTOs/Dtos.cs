@@ -106,3 +106,22 @@ public record ImportCardsResponse(
     int                  Skipped,
     IEnumerable<string>  Errors
 );
+
+// ── Detailed Stats ───────────────────────────────────────────────────────────
+
+public record DetailedStatsResponse(
+    double RetentionRate,
+    List<HeatmapEntry> Heatmap,
+    List<SessionLogEntry> RecentSessions
+);
+
+public record HeatmapEntry(string Date, int Count);
+
+public record SessionLogEntry(
+    string Date,
+    string Deck,
+    int Count,
+    int Accuracy,
+    string TimeSpent,
+    int NewWords
+);

@@ -19,6 +19,7 @@ export function showView(name) {
   const nav = document.getElementById(`nav-${name}`);
   if (nav) nav.classList.add('active');
 
+  if (name === 'dashboard') renderDashboard();
   if (name === 'decks') renderDecksPage();
   if (name === 'stats') renderStatsPage();
 }
