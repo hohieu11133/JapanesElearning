@@ -1,36 +1,36 @@
 /* ── Tokens ─────────────────────────────────────────────────────────────── */
 :root {
-  --surface:               #111319;
-  --surface-low:           #191b22;
-  --surface-container:     #1e1f26;
-  --surface-high:          #282a30;
-  --surface-highest:       #33343b;
-  --surface-bright:        #373940;
-  --surface-dim:           #111319;
+  --surface:               #f8fafc; /* Slate-50 background */
+  --surface-low:           #f1f5f9; /* Slate-100 sidebar background */
+  --surface-container:     #ffffff; /* Card / main container background */
+  --surface-high:          #e2e8f0; /* Hover states, subtle highlights */
+  --surface-highest:       #cbd5e1; /* Active borders / dividers */
+  --surface-bright:        #ffffff; 
+  --surface-dim:           #f8fafc;
 
-  --primary:               #ffb4a8;
-  --primary-container:     #ff5542;
-  --on-primary:            #690000;
-  --on-primary-container:  #5c0000;
+  --primary:               #0f172a; /* Slate-900 for primary text and main actions */
+  --primary-container:     #1e293b; /* Slate-800 for buttons/borders */
+  --on-primary:            #ffffff;
+  --on-primary-container:  #f8fafc;
 
-  --secondary:             #ffb961;
-  --secondary-container:   #e89300;
+  --secondary:             #475569; /* Slate-600 for secondary elements */
+  --secondary-container:   #64748b; /* Slate-500 */
 
-  --tertiary:              #4ae183;
-  --tertiary-container:    #00a657;
+  --tertiary:              #10b981; /* Emerald-500 for active/success states */
+  --tertiary-container:    #059669;
 
-  --on-surface:            #e2e2eb;
-  --on-surface-variant:    #e7bdb6;
-  --outline:               #ae8882;
-  --outline-variant:       #5d3f3b;
+  --on-surface:            #0f172a; /* Charcoal text */
+  --on-surface-variant:    #334155; /* Slate-700 text */
+  --outline:               #94a3b8; /* Muted gray text / icons */
+  --outline-variant:       #cbd5e1; /* Light borders */
 
-  --error:                 #ffb4ab;
-  --error-container:       #93000a;
+  --error:                 #ef4444; /* Rose-500 for errors/destructives */
+  --error-container:       #dc2626;
 
   --font-serif:  'Noto Serif JP', serif;
   --font-body:   'Plus Jakarta Sans', sans-serif;
   --font-label:  'Inter', sans-serif;
 
-  --radius-sm:  4px; --radius-md: 8px; --radius-lg: 16px;
+  --radius-sm:  6px; --radius-md: 10px; --radius-lg: 16px;
   --radius-xl:  24px; --radius-pill: 50px;
 }

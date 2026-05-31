@@ -64,7 +64,7 @@ export function draw(e) {
     ctx.strokeStyle = 'rgba(0,0,0,1)';
   } else {
     ctx.globalCompositeOperation = 'source-over';
-    ctx.strokeStyle = '#e2e2eb';
+    ctx.strokeStyle = '#1e293b';
   }
 
   ctx.lineTo(e.offsetX, e.offsetY);
