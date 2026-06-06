@@ -26,8 +26,6 @@ jobs:
           push: true
           tags: kyhieu/japane-learn:latest
 
-  # Chờ build xong, gọi máy chủ nội bộ tự pull code
-  # Deploy lên Ubuntu (Primary Server) bằng self-hosted runner
   deploy_ubuntu:
     needs: build_job
     runs-on: self-hosted
@@ -35,6 +33,12 @@ jobs:
       - name: Deploy on Local Server
         run: |
           cd ~/app/japane-learn-prod
-          docker compose down
+          # 1. Cập nhật file docker-compose.yml và cấu hình mới nhất từ git
+          git fetch origin main
+          git reset --hard origin/main
+          
+          # 2. Tải ảnh mới nhất từ Docker Hub
           docker compose pull api
-          docker compose up -d
+          
+          # 3. Khởi động lại container bằng ảnh mới (chỉ mất vài giây, không cần down trước để giảm downtime)
+          docker compose up -d --force-recreate
