@@ -30,15 +30,8 @@ jobs:
     needs: build_job
     runs-on: self-hosted
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Deploy on Local Server
         run: |
-          # 1. Cập nhật thư mục frontend lên đĩa cứng của server để Nginx phục vụ đúng file tĩnh mới nhất
-          cp -r frontend ~/app/japane-learn-prod/
-          
-          # 2. Di chuyển vào thư mục chạy để pull ảnh và restart container
           cd ~/app/japane-learn-prod
           docker compose pull api
           docker compose up -d --force-recreate api
