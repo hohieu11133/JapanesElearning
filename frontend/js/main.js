@@ -1,5 +1,5 @@
 import { state } from './state.js';
-import { switchAuthTab, handleLogin, handleRegister, handleLogout } from './auth.js';
+import { switchAuthTab, handleLogin, handleRegister, handleLogout, startSessionTimer } from './auth.js';
 import { loadDecks, renderDashboard, renderDecksPage, openCreateDeckModal, handleCreateDeck, openEditDeckModal, handleEditDeck, confirmDeleteDeck, confirmDeleteDeckById, openDeck } from './decks.js';
 import { openAddCardModal, handleAddCard, openEditCardModal, handleEditCard, confirmDeleteCard } from './cards.js';
 import { openImportModal, handleImportFile, onImportTextChange, handleConfirmImport, initImportDrop } from './import.js';
@@ -119,5 +119,8 @@ document.addEventListener('keydown', e => {
   if (document.readyState !== 'loading') initImportDrop();
 
   // Auto-login
-  if (state.token && state.user) bootApp();
+  if (state.token && state.user) {
+    startSessionTimer();
+    if (state.token) bootApp();
+  }
 })();

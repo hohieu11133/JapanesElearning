@@ -15,6 +15,21 @@ export async function apiFetch(path, opts = {}) {
   let data;
   try { data = JSON.parse(text); } catch { data = text; }
   if (!res.ok) {
+    if (res.status === 401) {
+      state.token = null;
+      state.user = null;
+      localStorage.removeItem('jpe_token');
+      localStorage.removeItem('jpe_user');
+      try {
+        const { handleLogout } = await import('./auth.js');
+        const { showToast } = await import('./utils.js');
+        handleLogout();
+        showToast('Session expired. Please log in again.', 'error');
+      } catch (e) {
+        window.location.reload();
+      }
+      throw new Error('Session expired');
+    }
     const msg = data?.message || data?.title || (typeof data === 'string' ? data : `Error ${res.status}`);
     throw new Error(msg);
   }
