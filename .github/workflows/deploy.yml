@@ -30,15 +30,17 @@ jobs:
     needs: build_job
     runs-on: self-hosted
     steps:
+      # 1. Tải code mới nhất từ repo về thư mục tạm thời của runner
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Copy docker-compose.yml mới nhất qua thư mục chạy thực tế và deploy
       - name: Deploy on Local Server
         run: |
+          # Sao chép file docker-compose.yml mới nhất vào thư mục chạy thực tế
+          cp docker-compose.yml ~/app/japane-learn-prod/
+          
+          # Di chuyển vào thư mục chạy thực tế để deploy
           cd ~/app/japane-learn-prod
-          # 1. Cập nhật file docker-compose.yml và cấu hình mới nhất từ git
-          git fetch origin main
-          git reset --hard origin/main
-          
-          # 2. Tải ảnh mới nhất từ Docker Hub
           docker compose pull api
-          
-          # 3. Khởi động lại container bằng ảnh mới (chỉ mất vài giây, không cần down trước để giảm downtime)
           docker compose up -d --force-recreate
