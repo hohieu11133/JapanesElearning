@@ -1,4 +1,12 @@
-# ── Stage 1: Build ────────────────────────────────────────────────────────────
+# ── Stage 1: Build Frontend (Vite) ────────────────────────────────────────────
+FROM node:20-alpine AS frontend-build
+WORKDIR /src
+COPY frontend/package*.json ./
+RUN npm install
+COPY frontend/ ./
+RUN npm run build
+
+# ── Stage 2: Build API (.NET 9.0) ─────────────────────────────────────────────
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
@@ -13,15 +21,15 @@ RUN dotnet publish ./JapaneseFlashcardAPI/JapaneseFlashcardAPI.csproj \
     -o /app/publish \
     --no-restore
 
-# ── Stage 2: Runtime (smaller image, no SDK) ───────────────────────────────────
+# ── Stage 3: Runtime (smaller image, no SDK) ───────────────────────────────────
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
 
 # Copy published API
 COPY --from=build /app/publish .
 
-# Copy the frontend static files into the image
-COPY frontend/ ./frontend/
+# Copy the compiled frontend static files from the build stage into the image
+COPY --from=frontend-build /src/dist/ ./frontend/
 
 # ── Environment ────────────────────────────────────────────────────────────────
 ENV ASPNETCORE_URLS=http://+:8080
