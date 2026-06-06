@@ -149,7 +149,9 @@ export function toggleCard() {
     // Flip to back
     front.classList.add('hidden');
     back.classList.remove('hidden');
-    ratingRow.classList.remove('hidden');
+    if (state.studyMode === 'practice') {
+      ratingRow.classList.remove('hidden');
+    }
     if (!state._cardRevealed) {
       state._cardRevealed = true;
       const kanji = document.getElementById('card-kanji').textContent;
@@ -159,6 +161,7 @@ export function toggleCard() {
     // Flip back
     back.classList.add('hidden');
     front.classList.remove('hidden');
+    ratingRow.classList.add('hidden');
   }
 }
 
