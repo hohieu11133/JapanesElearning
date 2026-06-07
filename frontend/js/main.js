@@ -8,6 +8,7 @@ import { setTool, clearCanvas } from './canvas.js';
 import { renderStatsPage } from './stats.js';
 import { initTTS, speakWord } from './tts.js';
 import { closeModal } from './utils.js';
+import { renderAdminUsers, renderSystemDocuments, renderDocumentsPage, switchAdminTab, openAdminDocModal, handleAdminSaveDoc } from './admin.js';
 
 // ═══════════════════════════════════════════════════════════ NAVIGATION ════════
 
@@ -22,6 +23,8 @@ export function showView(name) {
   if (name === 'dashboard') renderDashboard();
   if (name === 'decks') renderDecksPage();
   if (name === 'stats') renderStatsPage();
+  if (name === 'admin' && state.user?.role === 'Admin') renderAdminUsers();
+  if (name === 'documents') renderDocumentsPage();
 }
 
 // ═══════════════════════════════════════════════════════════ APP BOOT ═════════
@@ -37,6 +40,15 @@ export async function bootApp() {
   document.getElementById('dash-greeting').textContent = `Good ${getTimeOfDay()}, ${name}`;
   document.getElementById('header-date').textContent =
     new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+
+  const adminNav = document.getElementById('nav-admin');
+  if (adminNav) {
+    if (state.user?.role === 'Admin') {
+      adminNav.classList.remove('hidden');
+    } else {
+      adminNav.classList.add('hidden');
+    }
+  }
 
   showView('dashboard');
   await loadDecks();
@@ -85,6 +97,11 @@ window.setTool = setTool;
 window.clearCanvas = clearCanvas;
 window.speakWord = speakWord;
 window.closeModal = closeModal;
+
+// Admin globals
+window.switchAdminTab = switchAdminTab;
+window.openAdminDocModal = openAdminDocModal;
+window.handleAdminSaveDoc = handleAdminSaveDoc;
 
 // ═══════════════════════════════════════════════════════════ KEYBOARD ═════════
 

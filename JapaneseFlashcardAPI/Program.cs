@@ -156,6 +156,33 @@ using (var scope = app.Services.CreateScope())
                     END
                 ");
                 logger.LogInformation("✅ Schema verification: Flashcards table has 'Repetitions' column.");
+
+                // Ensure 'Role' column exists in 'Users'
+                db.Database.ExecuteSqlRaw(@"
+                    IF NOT EXISTS (
+                        SELECT * FROM sys.columns 
+                        WHERE object_id = OBJECT_ID('Users') AND name = 'Role'
+                    )
+                    BEGIN
+                        ALTER TABLE Users ADD Role NVARCHAR(50) NOT NULL DEFAULT 'User';
+                    END
+                ");
+                logger.LogInformation("✅ Schema verification: Users table has 'Role' column.");
+
+                // Ensure 'SystemDocuments' table exists
+                db.Database.ExecuteSqlRaw(@"
+                    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='SystemDocuments' AND xtype='U')
+                    BEGIN
+                        CREATE TABLE SystemDocuments (
+                            Id INT IDENTITY(1,1) PRIMARY KEY,
+                            Title NVARCHAR(200) NOT NULL,
+                            Content NVARCHAR(MAX) NOT NULL,
+                            CreatedAt DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+                            UpdatedAt DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
+                        );
+                    END
+                ");
+                logger.LogInformation("✅ Schema verification: SystemDocuments table exists.");
             }
             break; // success — exit retry loop
         }

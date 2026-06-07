@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<Deck>      Decks       => Set<Deck>();
     public DbSet<Flashcard> Flashcards  => Set<Flashcard>();
     public DbSet<ReviewLog> ReviewLogs  => Set<ReviewLog>();
+    public DbSet<SystemDocument> SystemDocuments => Set<SystemDocument>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

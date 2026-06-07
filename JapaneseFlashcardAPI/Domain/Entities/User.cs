@@ -18,6 +18,9 @@ public class User
     [Required]
     public string PasswordHash { get; set; } = string.Empty;
 
+    [Required, MaxLength(50)]
+    public string Role { get; set; } = "User";
+
     // Navigation
     public ICollection<Deck> Decks { get; set; } = new List<Deck>();
     public ICollection<ReviewLog> ReviewLogs { get; set; } = new List<ReviewLog>();

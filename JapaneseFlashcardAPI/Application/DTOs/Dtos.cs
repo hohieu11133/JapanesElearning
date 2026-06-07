@@ -18,7 +18,8 @@ public record LoginRequest(
 public record AuthResponse(
     string Token,
     string Username,
-    string Email
+    string Email,
+    string Role
 );
 
 // ── Deck ────────────────────────────────────────────────────────────────────
@@ -124,4 +125,32 @@ public record SessionLogEntry(
     int Accuracy,
     string TimeSpent,
     int NewWords
+);
+
+// ── Admin ───────────────────────────────────────────────────────────────────
+
+public record UserDto(
+    int Id,
+    string Username,
+    string Email,
+    string Role
+);
+
+public record RoleUpdateRequest(
+    [Required, MaxLength(50)] string NewRole
+);
+
+// ── System Documents ────────────────────────────────────────────────────────
+
+public record SystemDocumentDto(
+    int Id,
+    string Title,
+    string Content,
+    DateTime CreatedAt,
+    DateTime UpdatedAt
+);
+
+public record CreateUpdateDocumentRequest(
+    [Required, MaxLength(200)] string Title,
+    [Required] string Content
 );

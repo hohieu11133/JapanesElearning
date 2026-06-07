@@ -48,7 +48,7 @@ export async function handleRegister(e) {
 
 export function persistAuth(data) {
   state.token = data.token;
-  state.user = { username: data.username, email: data.email };
+  state.user = { username: data.username, email: data.email, role: data.role };
   localStorage.setItem('jpe_token', data.token);
   localStorage.setItem('jpe_user', JSON.stringify(state.user));
 }

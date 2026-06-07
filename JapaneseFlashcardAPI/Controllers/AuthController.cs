@@ -60,7 +60,7 @@ public class AuthController : ControllerBase
         await _db.SaveChangesAsync();
 
         var token = GenerateJwt(user);
-        return CreatedAtAction(nameof(Register), new AuthResponse(token, user.Username, user.Email));
+        return CreatedAtAction(nameof(Register), new AuthResponse(token, user.Username, user.Email, user.Role));
     }
 
     // POST api/auth/login
@@ -79,7 +79,7 @@ public class AuthController : ControllerBase
             return Unauthorized(new { message = "Invalid email or password." });
 
         var token = GenerateJwt(user);
-        return Ok(new AuthResponse(token, user.Username, user.Email));
+        return Ok(new AuthResponse(token, user.Username, user.Email, user.Role));
     }
 
     // ── Private helpers ──────────────────────────────────────────────────────
@@ -95,6 +95,7 @@ public class AuthController : ControllerBase
             new Claim(JwtRegisteredClaimNames.Sub,   user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim("username",                    user.Username),
+            new Claim(ClaimTypes.Role,               user.Role),
             new Claim(JwtRegisteredClaimNames.Jti,   Guid.NewGuid().ToString())
         };
 

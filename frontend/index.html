@@ -87,6 +87,12 @@
       <a class="nav-link" id="nav-stats" onclick="showView('stats')" href="#">
         <span class="nav-icon">◈</span><span>Statistics</span>
       </a>
+      <a class="nav-link" id="nav-documents" onclick="showView('documents')" href="#">
+        <span class="nav-icon">📄</span><span>System Documents</span>
+      </a>
+      <a class="nav-link hidden" id="nav-admin" onclick="showView('admin')" href="#">
+        <span class="nav-icon">⚙</span><span>Admin Panel</span>
+      </a>
     </div>
     <button class="btn-logout" onclick="handleLogout()">↩ Sign out</button>
   </nav>
@@ -609,6 +615,106 @@
       </section>
     </div>
 
+    <!-- ── ADMIN PANEL ─────────────────────────────────────────────────────── -->
+    <div id="view-admin" class="view hidden">
+      <header class="view-header">
+        <div>
+          <div class="view-eyebrow">管理</div>
+          <h1 class="view-title">Admin Panel</h1>
+        </div>
+      </header>
+      
+      <div class="split-filter-tabs" style="margin-bottom: 24px;">
+        <button class="filter-tab active" id="admin-tab-users" onclick="switchAdminTab('users')">Users</button>
+        <button class="filter-tab" id="admin-tab-docs" onclick="switchAdminTab('docs')">Documents</button>
+      </div>
+
+      <!-- Admin: Users Tab -->
+      <div id="admin-content-users" class="admin-tab-content">
+        <div class="deck-cards-header" style="margin-bottom: 16px;">
+          <h3 class="section-title">User Management</h3>
+        </div>
+        <div class="cards-table-wrap">
+          <table class="cards-table">
+            <thead>
+              <tr>
+                <th>Username</th><th>Email</th><th>Role</th><th class="th-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-users-tbody">
+              <!-- Rendered via JS -->
+              <tr><td colspan="4" class="empty-state">Loading users…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Admin: Documents Tab -->
+      <div id="admin-content-docs" class="admin-tab-content hidden">
+        <div class="deck-cards-header" style="margin-bottom: 16px;">
+          <h3 class="section-title">Document Management</h3>
+          <div class="deck-cards-sort">
+            <button class="btn-primary btn-sm" onclick="openAdminDocModal()">+ Create Document</button>
+          </div>
+        </div>
+        <div class="cards-table-wrap">
+          <table class="cards-table">
+            <thead>
+              <tr>
+                <th>Title</th><th>Created At</th><th>Updated At</th><th class="th-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-docs-tbody">
+              <!-- Rendered via JS -->
+              <tr><td colspan="4" class="empty-state">Loading documents…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SYSTEM DOCUMENTS VIEWER ─────────────────────────────────────────── -->
+    <div id="view-documents" class="view hidden">
+      <header class="view-header">
+        <div>
+          <div class="view-eyebrow">資料</div>
+          <h1 class="view-title">System Documents</h1>
+        </div>
+      </header>
+      
+      <div class="split-pane-layout">
+        <!-- Left Panel: Doc list -->
+        <aside class="split-left-panel">
+          <div class="split-left-header">
+            <h2 class="split-left-title">Documents</h2>
+          </div>
+          <div class="split-deck-list" id="docs-list-container">
+            <div class="empty-state">Loading documents…</div>
+          </div>
+        </aside>
+
+        <!-- Right Panel: Doc Details -->
+        <main class="split-right-panel" id="docs-detail-panel">
+          <div id="doc-details-empty" class="empty-state">
+            <div class="empty-icon">📄</div>
+            <p>Select a document to read.</p>
+          </div>
+          <div id="doc-details-active" class="deck-details-wrap hidden">
+            <div class="deck-details-header">
+              <div>
+                <h1 class="view-title" id="doc-view-title">Document Title</h1>
+                <div class="deck-meta-tags">
+                  <span class="meta-tag font-label" id="doc-view-date">Last Updated: —</span>
+                </div>
+              </div>
+            </div>
+            <div class="doc-content-body section" id="doc-view-content" style="white-space: pre-wrap; line-height: 1.6; font-family: 'Inter', sans-serif;">
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -803,6 +909,29 @@
 
 <!-- Toast -->
 <div id="toast" class="toast hidden"></div>
+
+<!-- Admin Document Modal -->
+<div id="modal-admin-doc" class="modal-overlay hidden" onclick="closeModal('modal-admin-doc')">
+  <div class="modal-card modal-wide" onclick="event.stopPropagation()">
+    <h2 class="modal-title" id="admin-doc-modal-title">Create Document<span>Tài liệu mới</span></h2>
+    <input type="hidden" id="admin-doc-id" />
+    <form onsubmit="handleAdminSaveDoc(event)">
+      <div class="field-group">
+        <label class="field-label">Title</label>
+        <input id="admin-doc-title" type="text" class="field-input" required maxlength="200" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">Content (Markdown supported)</label>
+        <textarea id="admin-doc-content" class="field-input" rows="12" required></textarea>
+      </div>
+      <div id="admin-doc-error" class="auth-error hidden"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" onclick="closeModal('modal-admin-doc')">Cancel</button>
+        <button type="submit" class="btn-primary">Save Document</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <script type="module" src="js/main.js"></script>
 </body>
