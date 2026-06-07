@@ -213,7 +213,9 @@ export async function renderDocumentsPage() {
         
         document.getElementById('doc-view-title').textContent = doc.title;
         document.getElementById('doc-view-date').textContent = `Last Updated: ${new Date(doc.updatedAt).toLocaleDateString()}`;
-        document.getElementById('doc-view-content').textContent = doc.content;
+        
+        // Parse markdown content
+        document.getElementById('doc-view-content').innerHTML = window.marked ? marked.parse(doc.content) : doc.content;
         
         docDetailsEmpty.classList.add('hidden');
         docDetailsActive.classList.remove('hidden');
